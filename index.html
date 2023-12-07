@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Status Page</title>
+</head>
+<body>
+<!-- This is the html that will return the status of each test-->
+<h1>Service Status</h1>
+<p>MySQL Connection: <span id="mysql-status">Checking...</span></p>
+<p>Database Schema: <span id="schema-status">Checking...</span></p>
+<p>Has the first cli command been run on loading: <span id="first-run-status">Checking...</span></p>
+<p>Has the second command been run: <span id="extra-command-status">Checking...</span></p>
+<p>EXTRA CREDIT: Redis Connection: <span id="redis-status">Checking...</span></p>
+</body>
+</html>
+<script>
+    window.onload = function() {
+
+        // This is the code that will check the status of mysql
+        fetch('/mysql-status')
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.getElementById('mysql-status');
+                statusElement.textContent = `MySQL Status: ${data.status}`;
+
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('mysql-status');
+                statusElement.textContent = 'MySQL Status: Error checking status';
+            });
+
+        // This is the code that will check the status of redis
+        fetch('/redis-status')
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.getElementById('redis-status');
+                statusElement.textContent = `Redis Status: ${data.status}`;
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('redis-status');
+                statusElement.textContent = 'Redis Status: Error checking status';
+            });
+
+        // This if for checking the schema
+        fetch('/check-schema')
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.getElementById('schema-status');
+                statusElement.textContent = `Schema Status: ${data.status}`;
+                if(data.schema) {
+                    statusElement.textContent += ` (Schema: ${data.schema})`;
+                }
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('schema-status');
+                statusElement.textContent = 'Schema Status: Error checking status';
+            });
+
+        // This for checking the first run status
+        fetch('/first-run-status')
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.getElementById('first-run-status');
+                statusElement.textContent = `${data.firstRun ? 'No' : 'Yes'}`;
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('first-run-status');
+                statusElement.textContent = 'Error checking first command status';
+            });
+
+        // This for checking the extra command-status
+        fetch('/extra-command-status')
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.getElementById('extra-command-status'); // Make sure you have an element with this ID
+                statusElement.textContent = `${data.firstRun ? 'No' : 'Yes'}`;
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('extra-command-status');
+                statusElement.textContent = 'Error checking second command status';
+            });
+    };
+</script>
