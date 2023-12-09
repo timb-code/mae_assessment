@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  mae:
+    container_name: app
+    image: mae/app
+    restart: unless-stopped
+    # Permit communication with the host docker server
+    # volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3000:3000
+    networks:
+      - mae_net
+    environment:
+      - RUN_TWO="1"
+
+  mysql:
+    container_name: mysql
+    image: mariadb:10.5.8
+    restart: unless-stopped
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - mae_net
+
+networks:
+  mae_net:
