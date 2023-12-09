@@ -6,12 +6,12 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y --no-install
 
 RUN mkdir -p /app/
 COPY ./*.sh /app/
-COPY ./index.* package.json /app/
+COPY ./index.* package.json init.sql /app/
 
 RUN cd /app/ \
 	&& chmod -c 755 start.sh \
 	&& sh commandOne.sh \
-	&& /usr/local/bin/npm install
+	&& /usr/local/bin/npm install nodemon --save-dev
 
 WORKDIR /app/
 
