@@ -17,7 +17,7 @@ services:
     networks:
       - mae_net
     environment:
-      - RUN_TWO="1"
+      RUN_TWO: "1"
 
 
   mysql:
@@ -31,6 +31,7 @@ services:
       - mae_net
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'testdb'
 
 networks:
   mae_net:
